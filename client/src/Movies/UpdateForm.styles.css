@@ -1,0 +1,22 @@
+.movie-form,
+button,
+h2 {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+input {
+    border: 1px solid grey;
+    display: flex;
+    flex-direction: column;
+    margin: 10px auto;
+}
+.movie-button {
+    border: 1px solid grey;
+    padding: 5px 10px;
+    background-color: lightseagreen;
+}
+.movie-button:hover {
+    background-color: green;
+    color: white;
+}

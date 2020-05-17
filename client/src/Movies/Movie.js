@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import MovieCard from "./MovieCard";
+// import UpdateForm from "./UpdateForm";
 
-function Movie({ addToSavedList }) {
+function Movie({ addToSavedList, removeFromSavedList }) {
   const [movie, setMovie] = useState(null);
   const params = useParams();
 
@@ -15,10 +16,17 @@ function Movie({ addToSavedList }) {
   };
 
   const saveMovie = () => {
+    // console.log(movie)
     addToSavedList(movie);
   };
 
+  const removeMovie = () => {
+    // console.log(movie)
+    removeFromSavedList(movie)
+  }
+
   useEffect(() => {
+    console.log('Movie.js params: ', params)
     fetchMovie(params.id);
   }, [params.id]);
 
@@ -33,7 +41,13 @@ function Movie({ addToSavedList }) {
       <div className="save-button" onClick={saveMovie}>
         Save
       </div>
-    </div>
+      <Link to={`/update-movie/${params.id}`}>
+        <button className='update-button' type='button'>Update</button>
+      </Link>
+      <div className="delete-button" onClick={removeMovie} >
+        Remove
+      </div>
+    </div >
   );
 }
 
