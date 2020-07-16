@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 
 const initialValue = {
   title: "",
@@ -12,34 +11,16 @@ const UpdateMovie = (props) => {
   const [movie, setMovie] = useState(initialValue);
 
   useEffect(() => {
-    console.log(props.movies);
     const movieToEdit = props.movies.find((movie) => {
-      // console.log(movies.id, props.match.params.id);
       return `${movie.id}` === props.match.params.id;
     });
-
-    console.log("MovieToEdit", movieToEdit);
     if (movieToEdit) {
       setMovie(movieToEdit);
     }
-  }, []);
+  }, [props.movies, props.match.params.id]);
 
   const handleChange = (event) => {
-    // console.log("changeHandler", event.target)
     setMovie({ ...movie, [event.target.name]: event.target.value });
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    axios
-      .put(`http://localhost:3000/movies/${props.match.params.id}`, movie)
-      .then((response) => {
-        console.log(response);
-        props.history.push(props.match.params.id);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   return (

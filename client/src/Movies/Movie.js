@@ -1,7 +1,6 @@
 import React from "react";
 import axios from "axios";
 import MovieCard from "./MovieCard";
-import UpdateMovie from "./UpdateMovie";
 
 export default class Movie extends React.Component {
   constructor(props) {
@@ -15,7 +14,7 @@ export default class Movie extends React.Component {
     this.fetchMovie(this.props.match.params.id);
   }
 
-  componentWillReceiveProps(newProps) {
+  componentDidUpdate(newProps) {
     if (this.props.match.params.id !== newProps.match.params.id) {
       this.fetchMovie(newProps.match.params.id);
     }
@@ -25,7 +24,7 @@ export default class Movie extends React.Component {
     axios
       .get(`http://localhost:5000/api/movies/${id}`)
       .then((res) => this.setState({ movie: res.data }))
-      .catch((err) => console.log(err.response));
+      .catch((err) => console.log("fetchMovie(id) get error", err.response));
   };
 
   saveMovie = () => {
@@ -33,8 +32,14 @@ export default class Movie extends React.Component {
     addToSavedList(this.state.movie);
   };
 
-  deleteMovie = (id) => {
-    console.log(id);
+  deleteMovie = () => {
+    axios
+      .delete(`http://localhost:5000/api/movies/${this.state.movie.id}`)
+      .then((res) => {
+        console.log("Movie.js axios delete", res);
+        this.props.history.push("/");
+      })
+      .catch((err) => console.log("deleteMovie() delete error", err.response));
   };
 
   render() {
@@ -46,19 +51,20 @@ export default class Movie extends React.Component {
       <div className="save-wrapper">
         <MovieCard movie={this.state.movie} />
         <div className="save-button" onClick={this.saveMovie}>
-          Save
+          Save Movie
         </div>
         <div className="delete-button" onClick={this.deleteMovie}>
-          Delete
+          Delete Movie
         </div>
         {/* - Add a button in the movie component that routes you to your new route with the movies's id as the URL param */}
-        <button
+        <div
+          className="update-button"
           onClick={() =>
             this.props.history.push(`/update-movie/${this.state.movie.id}`)
           }
         >
           Update Movie
-        </button>
+        </div>
       </div>
     );
   }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios";
+// import axios from "axios";
 
 class AddMovie extends Component {
   state = {
@@ -14,20 +14,21 @@ class AddMovie extends Component {
     const { stars } = this.state;
     stars.push(this.state.actor);
     this.setState({ actor: "", stars });
+    console.log(this.state.stars);
   };
 
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  submitMovie = () => {
-    const { stars, title, metaScore, director } = this.state;
-    const newMovie = { stars, title, metaScore, director };
-    const saveMovie = axios
-      .post("http://localhost:3333/api/movies", newMovie)
-      .then((response) => this.props.history.push("/"))
-      .catch((err) => console.log(err));
-  };
+  // submitMovie = () => {
+  //   const { stars, title, metaScore, director } = this.state;
+  //   const newMovie = { stars, title, metaScore, director };
+  //   const saveMovie = axios
+  //     .post("http://localhost:3333/api/movies", newMovie)
+  //     .then((response) => this.props.history.push("/"))
+  //     .catch((err) => console.log("Axios post error", err));
+  // };
 
   render() {
     return (
@@ -60,7 +61,7 @@ class AddMovie extends Component {
           onChange={this.handleChange}
           name="actor"
         />
-        <button onClick={this.addStars}>Add Actor to List</button>
+        <button onClick={this.addStars}>Add Actor</button>
         <button onClick={this.submitMovie}>Save Movie</button>
         {this.state.stars.map((actor) => {
           return <div>{actor}</div>;
